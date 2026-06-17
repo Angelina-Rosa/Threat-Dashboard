@@ -1,6 +1,6 @@
 # Threat Intel Dashboard
 
-A full-stack web application that checks IP address reputation using the [AbuseIPDB](https://www.abuseipdb.com) API. Enter any IP address and instantly see its abuse confidence score, country of origin, ISP, and full report history — all persisted to a PostgreSQL database.
+A full-stack web application that checks IP address reputation using the [AbuseIPDB](https://www.abuseipdb.com) API. Enter any IP address and instantly see its abuse confidence score, country of origin, ISP, and full report history persisted to a PostgreSQL database.
 
 Built with Java, Spring Boot, PostgreSQL, and Docker.
 
