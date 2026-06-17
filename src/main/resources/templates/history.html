@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>IP History</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        body { background-color: #0f1117; color: #e0e0e0; }
+        .card { background-color: #1a1d27; border: 1px solid #2a2d3e; }
+        .card-header { background-color: #1e2132; border-bottom: 1px solid #2a2d3e; }
+        .table { color: #e0e0e0; }
+        .table thead th { color: #8b9bb4; border-color: #2a2d3e; font-size: 0.8rem; text-transform: uppercase; }
+        .table td { border-color: #2a2d3e; vertical-align: middle; }
+        .badge-high { background-color: #dc3545; }
+        .badge-medium { background-color: #fd7e14; }
+        .badge-low { background-color: #198754; }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-dark bg-dark px-4 mb-4">
+    <span class="navbar-brand">
+        <i class="bi bi-shield-fill-exclamation text-danger me-2"></i>
+        Threat Intel Dashboard
+    </span>
+    <a href="/" class="btn btn-outline-secondary btn-sm">
+        <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+    </a>
+</nav>
+
+<div class="container px-4">
+    <div class="card">
+        <div class="card-header">
+            <h5 class="mb-0">
+                <i class="bi bi-clock-history me-2"></i>
+                Lookup History for <span class="text-white" th:text="${ipAddress}"></span>
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div th:if="${#lists.isEmpty(history)}" class="text-center text-muted py-5">
+                <i class="bi bi-inbox fs-1"></i>
+                <p class="mt-2">No history found for this IP.</p>
+            </div>
+            <table th:unless="${#lists.isEmpty(history)}" class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Checked At</th>
+                        <th>Abuse Score</th>
+                        <th>Risk</th>
+                        <th>Country</th>
+                        <th>ISP</th>
+                        <th>Total Reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="lookup : ${history}">
+                        <td class="text-muted" th:text="${#temporals.format(lookup.lookedUpAt, 'MM/dd/yyyy HH:mm:ss')}"></td>
+                        <td th:text="${lookup.abuseConfidenceScore} + '%'"></td>
+                        <td>
+                            <span class="badge"
+                                  th:classappend="${lookup.abuseConfidenceScore >= 75} ? 'badge-high' : (${lookup.abuseConfidenceScore >= 25} ? 'badge-medium' : 'badge-low')"
+                                  th:text="${lookup.abuseConfidenceScore >= 75} ? 'HIGH' : (${lookup.abuseConfidenceScore >= 25} ? 'MEDIUM' : 'LOW')">
+                            </span>
+                        </td>
+                        <td th:text="${lookup.countryCode ?: 'N/A'}"></td>
+                        <td th:text="${lookup.isp ?: 'N/A'}"></td>
+                        <td th:text="${lookup.totalReports}"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

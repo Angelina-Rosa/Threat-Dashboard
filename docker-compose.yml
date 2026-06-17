@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+
+  # PostgreSQL database
+  db:
+    image: postgres:15-alpine
+    container_name: threatintel-db
+    environment:
+      POSTGRES_DB: threatintel
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"         # Expose so you can connect with a DB client locally
+    volumes:
+      - postgres_data:/var/lib/postgresql/data   # Persist data across restarts
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Spring Boot application
+  app:
+    build: .                # Build from the Dockerfile in this directory
+    container_name: threatintel-app
+    ports:
+      - "8080:8080"         # Access the dashboard at http://localhost:8080
+    environment:
+      # Override application.properties values with Docker environment variables
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/threatintel
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      ABUSEIPDB_API_KEY: ${ABUSEIPDB_API_KEY}   # Read from .env file (see README)
+    depends_on:
+      db:
+        condition: service_healthy   # Wait for PostgreSQL to be ready before starting
+
+  # pgAdmin — visual PostgreSQL browser (optional but useful for demos)
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: threatintel-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"           # Access pgAdmin at http://localhost:5050
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:            # Named volume so DB data survives container restarts

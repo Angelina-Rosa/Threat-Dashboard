@@ -1,0 +1,21 @@
+# IMPORTANT: Never commit your API key
+.env
+
+# Maven build output
+target/
+*.jar
+*.war
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+*.class
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Spring Boot
+*.log
+logs/
