@@ -1,6 +1,9 @@
 package com.threatintel.service;
 
 import com.threatintel.model.AbuseIpDbResponse;
+
+import java.net.http.HttpHeaders;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,16 +11,13 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-/**
- * Handles all communication with the AbuseIPDB external API.
- * Reads API key and URL from application.properties.
- */
+//Handles all communication with the AbuseIPDB external API
+
 @Service
 public class AbuseIpDbService {
 
     private static final Logger log = LoggerFactory.getLogger(AbuseIpDbService.class);
 
-    // Injected from application.properties
     @Value("${abuseipdb.api.key}")
     private String apiKey;
 
@@ -38,7 +38,7 @@ public class AbuseIpDbService {
      */
     public AbuseIpDbResponse checkIp(String ipAddress) {
         try {
-            // Build request headers — AbuseIPDB requires the API key in the header
+            // Build request headers... this requires the API key in the header
             HttpHeaders headers = new HttpHeaders();
             headers.set("Key", apiKey);
             headers.set("Accept", "application/json");
@@ -51,7 +51,7 @@ public class AbuseIpDbService {
 
             log.info("Querying AbuseIPDB for IP: {}", ipAddress);
 
-            // Make the GET request and deserialize JSON into AbuseIpDbResponse
+            // Make the GET request + deserialize JSON 
             ResponseEntity<AbuseIpDbResponse> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
