@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-/**
- * Represents a single IP lookup result stored in the database.
- * Each time a user checks an IP, a record is saved here.
- */
+ //Each time a user checks an IP, a record is saved here
 @Entity
 @Table(name = "ip_lookups")
 @Data                   // Lombok: generates getters, setters, toString, equals, hashCode
@@ -24,13 +21,13 @@ public class IpLookup {
     @Column(nullable = false)
     private String ipAddress;
 
-    // AbuseIPDB confidence score: 0 (clean) to 100 (definitely malicious)
+    // Score: 0 (clean) to 100 (malicious)
     private int abuseConfidenceScore;
 
-    // Country code where the IP is registered (e.g. "US", "CN")
+    // Country code where the IP is registered (ex. "US", "CN")
     private String countryCode;
 
-    // Internet Service Provider name
+    // ISPname
     private String isp;
 
     // Domain associated with the IP
@@ -39,10 +36,10 @@ public class IpLookup {
     // Total number of times this IP has been reported on AbuseIPDB
     private int totalReports;
 
-    // Whether AbuseIPDB has this IP whitelisted
+    // Whether AbuseIPDB has this IP whitelisted...
     private boolean isWhitelisted;
 
-    // When this lookup was performed
+    // WHEN this lookup was performed
     @Column(nullable = false)
     private LocalDateTime lookedUpAt;
 

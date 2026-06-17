@@ -6,11 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-/**
- * Spring Data JPA repository for IpLookup entities.
- * JpaRepository provides save(), findById(), findAll(), delete(), etc. for free.
- * Custom query methods are derived automatically from their method names.
- */
 @Repository
 public interface IpLookupRepository extends JpaRepository<IpLookup, Long> {
 
@@ -20,6 +15,6 @@ public interface IpLookupRepository extends JpaRepository<IpLookup, Long> {
     // Check if we've already looked up this IP before
     boolean existsByIpAddress(String ipAddress);
 
-    // Get all previous lookups for a specific IP (for repeat-check history)
+    // Get all previous lookups for a specific IP address, ordered by most recent first
     List<IpLookup> findByIpAddressOrderByLookedUpAtDesc(String ipAddress);
 }

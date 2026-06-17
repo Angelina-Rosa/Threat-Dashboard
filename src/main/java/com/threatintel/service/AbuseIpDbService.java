@@ -30,12 +30,6 @@ public class AbuseIpDbService {
         this.restTemplate = new RestTemplate();
     }
 
-    /**
-     * Queries AbuseIPDB for information about a given IP address.
-     *
-     * @param ipAddress the IP to check (e.g. "118.25.6.39")
-     * @return AbuseIpDbResponse containing threat data, or null if the request fails
-     */
     public AbuseIpDbResponse checkIp(String ipAddress) {
         try {
             // Build request headers... this requires the API key in the header

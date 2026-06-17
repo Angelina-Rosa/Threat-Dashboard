@@ -4,22 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-/**
- * Maps the JSON response from AbuseIPDB's /check endpoint.
- *
- * Example response shape:
- * {
- *   "data": {
- *     "ipAddress": "118.25.6.39",
- *     "abuseConfidenceScore": 100,
- *     "countryCode": "CN",
- *     "isp": "Tencent Cloud",
- *     "domain": "tencent.com",
- *     "totalReports": 1000,
- *     "isWhitelisted": false
- *   }
- * }
- */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true) // Ignore any extra fields AbuseIPDB returns
 public class AbuseIpDbResponse {

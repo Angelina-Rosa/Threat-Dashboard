@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * Handles HTTP requests for the dashboard UI.
- * Returns Thymeleaf template names which map to HTML files in /resources/templates/
- */
 @Controller
 public class DashboardController {
 
@@ -22,8 +18,7 @@ public class DashboardController {
     }
 
     /**
-     * GET /
-     * Loads the main dashboard with recent lookup history.
+     * GET /... Loads the main dashboard with recent lookup history.
      */
     @GetMapping("/")
     public String dashboard(Model model) {
@@ -34,13 +29,12 @@ public class DashboardController {
     }
 
     /**
-     * POST /lookup
-     * Accepts an IP address from the form, runs the lookup, and returns results.
+     * POST /lookup...Accepts an IP address from the form, runs the lookup, and returns results
      */
     @PostMapping("/lookup")
     public String lookup(@RequestParam("ipAddress") String ipAddress, Model model) {
 
-        // Basic input sanitization — trim whitespace
+        // Basic sanitization for whitespace
         ipAddress = ipAddress.trim();
 
         // Perform the lookup
@@ -72,14 +66,13 @@ public class DashboardController {
     }
 
     /**
-     * GET /history/{ip}
-     * Returns full lookup history for a specific IP address.
+     * GET /history/{ip}...Returns full lookup history for a specific IP address
      */
     @GetMapping("/history/{ip}")
     public String ipHistory(@PathVariable("ip") String ipAddress, Model model) {
         List<IpLookup> history = ipLookupService.getHistoryForIp(ipAddress);
         model.addAttribute("history", history);
         model.addAttribute("ipAddress", ipAddress);
-        return "history"; // maps to templates/history.html
+        return "history"; 
     }
 }
